@@ -1,0 +1,7 @@
+export enum DiscountType {
+  OFFER = 'PROMO_CODE',
+  PROMO = 'PROMO_WALLET',
+  WAVECOIN = 'WAVECOIN',
+  COMBO = 'COMBO',
+  SUBSCRIPTION = 'SUBSCRIPTION',
+}

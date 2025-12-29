@@ -1,0 +1,6 @@
+export enum CartStatusEnum {
+  ACTIVE = 'ACTIVE',
+  CHECKED_OUT = 'CHECKED_OUT',
+  ABANDONED = 'ABANDONED',
+  EXPIRED = 'EXPIRED',
+}
