@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { validationSchema } from './config/validation.schema';
 import databsaeConfig from './config/databsae.config';
 import { DatabaseModule } from './database/database.module';
+import { CartModule } from './module/cart-service/cart.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { DatabaseModule } from './database/database.module';
       load: [databsaeConfig],
     }),
     DatabaseModule,
+    CartModule
   ],
   controllers: [AppController],
   providers: [AppService],
