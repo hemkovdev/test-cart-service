@@ -10,7 +10,13 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AddToCartDto, AddToCartResponseDto } from '../dtos';
-import { OptionalCustomerId, SessionId } from 'src/common/decorators';
+import {
+  Channel,
+  CustomerId,
+  OptionalCustomerId,
+  SessionId,
+} from 'src/common/decorators';
+import { AddToCartService } from '../services/add-to-cart.service';
 
 @ApiTags('Cart')
 @ApiBearerAuth()
@@ -31,8 +37,12 @@ import { OptionalCustomerId, SessionId } from 'src/common/decorators';
 })
 @Controller('cart')
 export class CartController {
-  constructor(private readonly cartService: CartService) {}
+  constructor(
+    private readonly cartService: CartService,
+    private readonly addToCartService: AddToCartService,
+  ) {}
 
+  // GET CART WITH ALL DETAILS
   @Get()
   @ApiOperation({ summary: 'Get Cart with all details' })
   @ApiQuery({
@@ -57,10 +67,11 @@ export class CartController {
     status: 200,
     description: 'Cart retrieved successfully with all refreshed data',
   })
-  getCart() {
+  async getCart(@CustomerId() customerId: string) {
     return this.cartService.getCart();
   }
 
+  // ADD ITEM TO CART
   @Post('add-to-cart')
   @ApiOperation({
     summary: 'Add items(s) to cart',
@@ -85,7 +96,12 @@ export class CartController {
     status: 409,
     description: 'Store mismatch - Cart has items from different store',
   })
-  addToCart(@OptionalCustomerId() @SessionId() @Body() dto: AddToCartDto) {
-    return { message: 'Item Added', dto };
+  addToCart(
+    @OptionalCustomerId() customerId: string,
+    @Channel() channel: string,
+    @SessionId() sessionId: string,
+    @Body() dto: AddToCartDto,
+  ) {
+    return this.addToCartService.addToCart(dto, channel, customerId, sessionId);
   }
 }
